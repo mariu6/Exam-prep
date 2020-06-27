@@ -5,9 +5,12 @@ const Models = require("../model");
 module.exports = {
     get: {
         home(req, res, next) {
+
+            
             res.status(200).render('home.hbs');
             // next();
         },
+        
     },
     post: {
 

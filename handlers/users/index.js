@@ -17,27 +17,12 @@ module.exports = {
         },
     },
     post: {
-        login(req, res, next) {
-            const { username, password } = req.body;
-            console.log(username, password);
-            User.findOne({ username }).then((user) => {
-                return Promise.all([user.passwordsMatch(password), user])
-            }).then(([match, user]) => {
-                if (!match) {
-                    next(err);
-                    return;
-                }
-                const token = jwt.createToken(user);
-
-                res.status(201).cookie(cookie, token, { maxAge: 3600000 }).redirect("/home/");
-            })
-        },
         register(req, res, next) {
-            const { username, password, repassword } = req.body;
-            if (password !== repassword) {
+            const { username, password, repeatPassword } = req.body;
+            if (password !== repeatPassword) {
                 res.render("users/register.hbs", {
                     message: "Passwords do not match!",
-                    oldInput: { username, password, repassword }
+                    oldInput: { username, password, repeatPassword }
                 });
                 return;
             }
@@ -46,13 +31,28 @@ module.exports = {
                     if (currentUser) { throw new Error("The given username is already used!") }
                     return User.create({ username, password })
                 }).then((createdUser) => {
-                    res.redirect("/user/login");
+                    res.redirect("/users/login");
                 }).catch((err) => {
                     res.render("users/register.hbs", {
                         message: err.message,
-                        oldInput: { username, password, repassword }
+                        oldInput: { username, password, repeatPassword }
                     })
                 })
+        },
+        login(req, res, next) {
+            const { username, password } = req.body;
+            console.log(username, password);
+            User.findOne({ username }).then((user) => {
+                return Promise.all([user.passwordsMatch(password), user])   
+            }).then(([match, user]) => {
+                if (!match) {
+                    next(err);
+                    return;
+                }
+                const token = jwt.createToken(user);
+
+                res.status(201).cookie(cookie, token, { maxAge: 3600000 }).redirect("/");
+            })
         }
     }
 }
