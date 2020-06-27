@@ -1,7 +1,7 @@
 {{#if isLoggedIn}}
 <h1 class="text-center">Courses</h1>
 <section>
-    <a href="/course/create" class="btn btn-warning ">Create Course</a>
+    <a href="/courses/create-course" class="btn btn-warning ">Create Course</a>
     <form class="search float-right">
         <label>Search: </label>
         <input type="text">
@@ -29,7 +29,7 @@
                     <h4 class="card-title">ExpressJS</h4>
                 </div>
                 <div class="card-footer">
-                    <a href=""><button type="button" class="btn btn-info">Details</button></a>
+                    <a href="/course/:id"><button type="button" class="btn btn-info">Details</button></a>
                     <small class="float-right">Date...</small>
                 </div>
             </div>
