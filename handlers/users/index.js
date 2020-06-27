@@ -6,14 +6,14 @@ const { cookie } = require('../../config/config');
 module.exports = {
     get: {
         login(req, res, next) {
-            res.status(200).render("users/login.hbs")
+            res.status(200).render("users/login.hbs");
         },
         register(req, res, next) {
-            res.status(200).render("users/register.hbs")
+            res.status(200).render("users/register.hbs");
         },
         logout(req, res, next) {
             req.user = null;
-            res.clearcookie(cookie).status(300).redirect("/home/")
+            res.clearCookie(cookie).status(300).redirect("/");
         },
     },
     post: {
@@ -31,7 +31,7 @@ module.exports = {
                     if (currentUser) { throw new Error("The given username is already used!") }
                     return User.create({ username, password })
                 }).then((createdUser) => {
-                    res.redirect("/users/login");
+                    res.status(201).redirect("/users/login");
                 }).catch((err) => {
                     res.render("users/register.hbs", {
                         message: err.message,
@@ -51,7 +51,7 @@ module.exports = {
                 }
                 const token = jwt.createToken(user);
 
-                res.status(201).cookie(cookie, token, { maxAge: 3600000 }).redirect("/");
+                res.status(200).cookie(cookie, token, { maxAge: 3600000 }).redirect("/");
             })
         }
     }
