@@ -1,10 +1,8 @@
-const routes = require("../routes");        // exported from index.js 
+const routes = require("../routes");       
 
 module.exports = (app) => {
-    // TO DO - All the main routes the application I have
-    app.use("/", routes.home);            // parent routes      
+    app.use("/", routes.home);            
     app.use("/users", routes.users);
-
     app.use("/models", routes.models);
 
 }

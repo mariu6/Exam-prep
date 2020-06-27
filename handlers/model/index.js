@@ -5,7 +5,9 @@ const Model = require("./Model");
 
 module.exports = {
     get: {
-
+        login(req,res,next) {
+            res.render("./users/login.hbs")
+        }
     },
     post: {
         
