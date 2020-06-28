@@ -14,8 +14,11 @@
             <a class="btn btn-danger" href="/courses/delete-course/{{course._id}}">Delete</a>
             <a class="btn btn-warning" href="/courses/edit-course/{{course._id}}">Edit</a>
             {{else}}
+            {{#if enrolled}}
             <span class="enrolled-span">You are already enrolled</span>
+            {{else}}
             <a class="btn btn-primary" href="/courses/enroll-course/{{course._id}}">Enroll</a>
+            {{/if}}
             {{/if}}
         </div>
     </div>

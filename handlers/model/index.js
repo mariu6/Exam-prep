@@ -16,26 +16,28 @@ module.exports = {
         detailsCourse(req, res) {
             const { courseId } = req.params;
             Model
-            .findById(courseId)
-            // .populate("enrolledUsers")
-            .lean().then((course) => {
-                const isLoggedIn = (req.user !== undefined);
-                res.render("courses/details-course.hbs", {
-                    isLoggedIn,
-                    username: req.user ? req.user.username : null,
-                    course,
-                    isCreator: JSON.stringify(course.creator) === JSON.stringify(req.user._id)   
-                });
+                .findById(courseId)
+                .populate("enrolledUsers")
+                .lean().then((course) => {
+                    const enrolled = JSON.stringify(course.enrolledUsers);
+                    const isLoggedIn = (req.user !== undefined);
+                    res.render("courses/details-course.hbs", {
+                        isLoggedIn,
+                        username: req.user ? req.user.username : null,
+                        course,
+                        isCreator: JSON.stringify(course.creator) === JSON.stringify(req.user._id),
+                        enrolled,
+                    });
 
-            })
+                })
         },
         enrollForCourse(req, res) {
-            const {courseId} = req.params;
+            const { courseId } = req.params;
             const userId = req.user._id;
 
-            return new Promise([                                                  // Update of related fields in 2 DB's
-                Model.updateOne(courseId, {$push: {enrolledUsers: userId}}),    
-                User.updateOne(userId, {$push: {enrolledCourses: courseId}}) 
+            return Promise.all([                                                  // Update of related fields in 2 DB's
+                Model.updateOne({ _id: courseId }, { $push: { enrolledUsers: userId } }),
+                User.updateOne({ _id: userId }, { $push: { enrolledCourses: courseId } })
             ]).then(([updatedModel, updatedUser]) => {
                 res.redirect(`/courses/details-course/${courseId}`)
             }).catch((err) => console.log(err.message));
@@ -58,7 +60,7 @@ module.exports = {
                         res.status(422).render("courses/create-course.hbs", {
                             message: err.errors.description || err.errors.imageUrl
                         });
-                    } else if(err.name === 'MongoError'){
+                    } else if (err.name === 'MongoError') {
                         console.error(err);
                         res.status(422).render("courses/create-course.hbs", {
                             message: "Course name already exists!"
