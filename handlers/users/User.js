@@ -14,7 +14,7 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    relatedArray: [{
+    enrolledCourses: [{
         type: ObjectId,
         ref: "Model"
     }]

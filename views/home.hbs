@@ -20,17 +20,15 @@
 <div class="container mt-3">
     <div class="row ">
         <div class="card-deck d-flex justify-content-center">
-            {{#each a}}
+            {{#each courses}}
             <div class="card mb-4">
-                <img class="card-img-top"
-                    src="https://blog.cyberpanel.net/wp-content/uploads/2019/03/express-js-cyberpanel.jpeg"
-                    alt="Card image cap" width="400">
+                <img class="card-img-top" src="{{imageUrl}}" alt="Card image cap" width="400">
                 <div class="card-body">
-                    <h4 class="card-title">ExpressJS</h4>
+                    <h4 class="card-title">{{title}}</h4>
                 </div>
                 <div class="card-footer">
-                    <a href="/course/:id"><button type="button" class="btn btn-info">Details</button></a>
-                    <small class="float-right">Date...</small>
+                    <a href="/courses/details-course/{{_id}}"><button type="button" class="btn btn-info">Details</button></a>
+                    <small class="float-right">{{createdAt}}</small>
                 </div>
             </div>
             {{else}}
@@ -45,13 +43,11 @@
     <div class="row d-flex justify-content-center">
 
         <div class="card-deck">
-            {{#each a}}
+            {{#each courses}}
             <div class="card mb-4">
-                <img class="card-img-top"
-                    src="https://blog.cyberpanel.net/wp-content/uploads/2019/03/express-js-cyberpanel.jpeg"
-                    alt="Card image cap" width="400">
+                <img class="card-img-top" src="{{imageUrl}}" alt="Card image cap" width="400">
                 <div class="card-body">
-                    <h4 class="card-title">ExpressJS</h4>
+                    <h4 class="card-title">{{title}}</h4>
                 </div>
             </div>
             {{else}}

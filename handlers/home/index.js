@@ -1,20 +1,22 @@
-const Models = require("../model");
-
-// TO DO - export the functionality
+const Model = require("../model/Model");
 
 module.exports = {
     get: {
         home(req, res) {
-            const isLoggedIn = (req.user !== undefined);
+            Model.find({ isPublic: true }).lean().then((courses) => {
+                const isLoggedIn = (req.user !== undefined);
+                // console.log(courses);
+                res.render('home.hbs', {
+                    isLoggedIn,                                      // isLoggedIn: isLoggedIn, 
+                    username: req.user ? req.user.username : "",
+                    courses                                         // hbs each
+                });
+            })
 
-            res.status(200).render('home.hbs', {
-                isLoggedIn,                                      // isLoggedIn: isLoggedIn, 
-                username: req.user ? req.user.username : null
-            });
-        },
+        }
 
     },
     post: {
 
     }
-}
+};
